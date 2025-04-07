@@ -1,0 +1,56 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+h1.nome {
+  color: white;
+  background-color: #28b491;
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+p.apresentacao {
+  background-color: #e2f0ff;
+  color: #000;
+  padding: 15px;
+  border-radius: 6px;
+  max-width: 600px;
+  margin: 20px auto;
+  text-align: justify;
+}
+
+.imagem-citacao {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.imagem-citacao img {
+  max-width: 300px;
+  border-radius: 10px;
+}
+
+.imagem-citacao blockquote {
+  font-style: italic;
+  margin-top: 10px;
+}
+
+pre.habilidades {
+  background-color: #222;
+  color: #0f0;
+  padding: 15px;
+  border-radius: 6px;
+  max-width: 500px;
+  margin: 0 auto 30px auto;
+  overflow-x: auto;
+}
+
+address {
+  font-style: normal;
+  text-align: center;
+  margin-top: 20px;
+  color: #555;
+}
