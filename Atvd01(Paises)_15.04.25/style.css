@@ -1,0 +1,58 @@
+body, h1, h2, h3, p, table, td, th {
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 32px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 24px;
+  margin-top: 20px;
+}
+
+h3 {
+  font-size: 18px;
+  margin-top: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background-color: #ffffff;
+}
+
+.menu{
+  background-color: #ff0000a8;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+th, td {
+  border: 1px solid #333;
+  padding: 10px;
+}
+
+th {
+  background-color: #cce5ff;
+}
+
+div {
+  background-color: #ffffff;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+}
+
+div > img {
+  display: block;
+  margin: 0 auto;
+}
