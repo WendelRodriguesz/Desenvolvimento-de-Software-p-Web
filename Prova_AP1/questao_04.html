@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Questões 04 e 05</title>
+<style>
+  body {
+    height: 200vh;
+    font-family: Arial;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(228, 228, 228);
+  }
+  .notification-card {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 250px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .close-btn {
+    background: none;
+    color:red;
+    font-weight: bold;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="notification-card" id="card">
+  <div class="card-header">
+    <button class="close-btn" onclick="closeCard()">X</button>
+  </div>
+  <div class="card-content">
+    <h3>Novidade!</h3>
+    <p>Confira nossos novos produtos.</p>
+  </div>
+</div>
+<script>
+  function closeCard() {
+    document.getElementById('card').style.display = 'none';
+  }
+</script>
+</body>
+</html>

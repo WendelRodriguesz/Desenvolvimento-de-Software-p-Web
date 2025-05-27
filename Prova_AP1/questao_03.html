@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Questão 03</title>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Arial;
+  }
+  img {
+    width: 200px;
+  }
+</style>
+</head>
+<body>
+<img id="pokemon" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg" alt="Pokemon">
+<p>Pokemon nº: <a href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg" id="numeroPokemon">1</a></p>
+<div>
+  <button onclick="mudarPokemon(-1)">Voltar -1</button>
+  <button onclick="mudarPokemon(1)">Adiantar +1</button>
+</div>
+<script>
+  let pokemonAtual = 1;
+  function mudarPokemon(mudanca) {
+    pokemonAtual += mudanca;
+    if (pokemonAtual < 1){ pokemonAtual = 1; console.log("Você já está no primeiro Pokémon!"); };
+    if (pokemonAtual > 100) {pokemonAtual = 100; console.log("Você já está no último Pokémon!"); };
+    document.getElementById('pokemon').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonAtual}.svg`;
+    document.getElementById('numeroPokemon').href = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonAtual}.svg`;
+    document.getElementById('numeroPokemon').textContent = `${pokemonAtual}`;
+  }
+</script>
+</body>
+</html>
