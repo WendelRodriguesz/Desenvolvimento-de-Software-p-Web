@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Alunos</title>
+</head>
+<body>
+  <h1>Alunos</h1>
+  <table border="1" id="tabela">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Curso</th>
+        <th>IRA</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <p><strong>Média dos IRAs:</strong> <span id="media"></span></p>
+
+  <script>
+    fetch('http://localhost:3000/alunos')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector('#tabela tbody');
+        let soma = 0;
+
+        data.forEach(aluno => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${aluno.nome}</td>
+            <td>${aluno.curso}</td>
+            <td>${aluno.ira}</td>
+          `;
+          tbody.appendChild(row);
+          soma += aluno.ira;
+        });
+
+        const media = soma / data.length;
+        document.getElementById('media').innerText = media.toFixed(2);
+      })
+      .catch(error => console.error('Erro ao buscar alunos:', error));
+  </script>
+</body>
+</html>
