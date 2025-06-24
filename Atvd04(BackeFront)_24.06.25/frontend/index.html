@@ -1,45 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Lista de Alunos</title>
+  <title>Gerenciador de Alunos</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Alunos</h1>
-  <table border="1" id="tabela">
+  <h1>Gerenciador de Alunos</h1>
+
+  <form id="form-aluno">
+    <input type="hidden" id="aluno-id">
+    <input type="text" id="nome" placeholder="Nome" required>
+    <input type="text" id="curso" placeholder="Curso" required>
+    <input type="number" step="0.01" id="ira" placeholder="IRA" required>
+    <button type="submit">Salvar</button>
+  </form>
+
+  <table>
     <thead>
       <tr>
         <th>Nome</th>
         <th>Curso</th>
         <th>IRA</th>
+        <th>Ações</th>
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody id="tabela-alunos"></tbody>
   </table>
-  <p><strong>Média dos IRAs:</strong> <span id="media"></span></p>
+
+  <p><strong>Média dos IRAs:</strong> <span id="media-ira">0.00</span></p>
 
   <script>
-    fetch('http://localhost:3000/alunos')
-      .then(response => response.json())
-      .then(data => {
-        const tbody = document.querySelector('#tabela tbody');
-        let soma = 0;
+    const apiUrl = 'http://localhost:3000/alunos';
 
-        data.forEach(aluno => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${aluno.nome}</td>
-            <td>${aluno.curso}</td>
-            <td>${aluno.ira}</td>
-          `;
-          tbody.appendChild(row);
-          soma += aluno.ira;
+    const form = document.getElementById('form-aluno');
+    const nomeInput = document.getElementById('nome');
+    const cursoInput = document.getElementById('curso');
+    const iraInput = document.getElementById('ira');
+    const idInput = document.getElementById('aluno-id');
+    const tabela = document.getElementById('tabela-alunos');
+    const mediaSpan = document.getElementById('media-ira');
+
+    async function carregarAlunos() {
+      const res = await fetch(apiUrl);
+      const alunos = await res.json();
+      tabela.innerHTML = '';
+      let soma = 0;
+
+      alunos.forEach(aluno => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${aluno.nome}</td>
+          <td>${aluno.curso}</td>
+          <td>${aluno.ira}</td>
+          <td>
+            <button onclick="editarAluno(${aluno.id}, '${aluno.nome}', '${aluno.curso}', ${aluno.ira})">Editar</button>
+            <button onclick="removerAluno(${aluno.id})">Remover</button>
+          </td>
+        `;
+        tabela.appendChild(tr);
+        soma += aluno.ira;
+      });
+
+      const media = alunos.length > 0 ? soma / alunos.length : 0;
+      mediaSpan.textContent = media.toFixed(2);
+    }
+
+    form.onsubmit = async function (e) {
+      e.preventDefault();
+      const aluno = {
+        nome: nomeInput.value,
+        curso: cursoInput.value,
+        ira: parseFloat(iraInput.value)
+      };
+
+      if (idInput.value) {
+        await fetch(`${apiUrl}/${idInput.value}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(aluno)
         });
+      } else {
+        await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(aluno)
+        });
+      }
 
-        const media = soma / data.length;
-        document.getElementById('media').innerText = media.toFixed(2);
-      })
-      .catch(error => console.error('Erro ao buscar alunos:', error));
+      form.reset();
+      idInput.value = '';
+      carregarAlunos();
+    };
+
+    window.editarAluno = function(id, nome, curso, ira) {
+      idInput.value = id;
+      nomeInput.value = nome;
+      cursoInput.value = curso;
+      iraInput.value = ira;
+    };
+
+    window.removerAluno = async function(id) {
+      await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+      carregarAlunos();
+    };
+
+    carregarAlunos();
   </script>
 </body>
 </html>
