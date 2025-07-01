@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>COVID19 - Países</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Dados COVID-19 - Países</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>País</th>
+        <th>Casos</th>
+        <th>Mortes</th>
+      </tr>
+    </thead>
+    <tbody id="tabela-paises"></tbody>
+  </table>
+
+  <script>
+    async function carregarPaises() {
+      const res = await fetch('https://covid19-brazil-api.now.sh/api/report/v1/countries');
+      const { data } = await res.json();
+      const tabela = document.getElementById('tabela-paises');
+
+      data.forEach(pais => {
+        const tr = document.createElement('tr');
+        if (pais.country.toLowerCase() === 'brazil') {
+          tr.classList.add('brasil');
+        }
+
+        tr.innerHTML = `
+          <td>${pais.country}</td>
+          <td>${pais.confirmed}</td>
+          <td>${pais.deaths}</td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    carregarPaises();
+  </script>
+</body>
+</html>

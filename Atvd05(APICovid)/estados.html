@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>COVID19 - Estados Brasileiros</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Dados COVID-19 - Estados do Brasil</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome do Estado</th>
+        <th>UF</th>
+        <th>Casos</th>
+        <th>Suspeitos</th>
+        <th>Mortes</th>
+      </tr>
+    </thead>
+    <tbody id="tabela-estados"></tbody>
+  </table>
+
+  <div class="resumo" id="resumo"></div>
+
+  <script>
+    async function carregarEstados() {
+      const res = await fetch('https://covid19-brazil-api.now.sh/api/report/v1');
+      const { data } = await res.json();
+
+      const tabela = document.getElementById('tabela-estados');
+      let totalCasos = 0, totalSuspeitos = 0, totalMortes = 0;
+
+      data.forEach(estado => {
+        totalCasos += estado.cases;
+        totalSuspeitos += estado.suspects;
+        totalMortes += estado.deaths;
+      });
+
+      const mediaCasos = totalCasos / data.length;
+      const mediaSuspeitos = totalSuspeitos / data.length;
+      const mediaMortes = totalMortes / data.length;
+
+      let maiorRelacao = 0;
+      let menorRelacao = Infinity;
+      let estadoMaiorRelacao = '', estadoMenorRelacao = '';
+
+      data.forEach(estado => {
+        const tr = document.createElement('tr');
+        const relacao = estado.cases / estado.deaths;
+
+        if (relacao > maiorRelacao) {
+          maiorRelacao = relacao;
+          estadoMaiorRelacao = estado.state;
+        }
+
+        if (relacao < menorRelacao) {
+          menorRelacao = relacao;
+          estadoMenorRelacao = estado.state;
+        }
+
+        if (estado.deaths > mediaMortes) {
+          tr.classList.add('acima-media');
+        }
+
+        tr.innerHTML = `
+          <td>${estado.state}</td>
+          <td>${estado.uf}</td>
+          <td>${estado.cases}</td>
+          <td>${estado.suspects}</td>
+          <td>${estado.deaths}</td>
+        `;
+        tabela.appendChild(tr);
+      });
+
+      document.getElementById('resumo').innerHTML = `
+        <p><strong>Média de Casos:</strong> ${mediaCasos.toFixed(2)}</p>
+        <p><strong>Média de Suspeitos:</strong> ${mediaSuspeitos.toFixed(2)}</p>
+        <p><strong>Média de Mortes:</strong> ${mediaMortes.toFixed(2)}</p>
+        <p><strong>Maior relação Casos/Mortes:</strong> ${estadoMaiorRelacao} (${maiorRelacao.toFixed(2)})</p>
+        <p><strong>Menor relação Casos/Mortes:</strong> ${estadoMenorRelacao} (${menorRelacao.toFixed(2)})</p>
+      `;
+    }
+
+    carregarEstados();
+  </script>
+</body>
+</html>
